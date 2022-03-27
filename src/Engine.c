@@ -176,7 +176,7 @@ int Engine_TexturesLoad(const char** files, int n) {
 
     char path[STR_PATH_BUFFER_SIZE];
     for (int i = 0; i < n; i++) {
-        sprintf(path, "%s\\%s", TEXTURE_FOLDER, files[i]);
+        sprintf(path, "%s/%s", TEXTURE_FOLDER, files[i]);
 
         engine.textures[i] = Engine_TextureLoad(path);
         if (!engine.textures[i]) 
@@ -215,14 +215,14 @@ Font* Engine_FontLoad(const char* fileName) {
     
     char path[STR_PATH_BUFFER_SIZE];
     
-    sprintf(path, "%s\\%s.png", FONT_FOLDER, fileName);
+    sprintf(path, "%s/%s.png", FONT_FOLDER, fileName);
     font->texture = Engine_TextureLoad(path);
     if (!font->texture) {
         Engine_PushErrorFile(path, "");
         return NULL;
     }
 
-    sprintf(path, "%s\\%s.txt", FONT_FOLDER, fileName);
+    sprintf(path, "%s/%s.txt", FONT_FOLDER, fileName);
     FILE* file = fopen(path, "r");
     if (!file) {
         Engine_PushErrorFile(path, "");
@@ -289,8 +289,14 @@ Font* Engine_FontLoad(const char* fileName) {
             font->kerningPairsLen = n;
 
             for (int i = 0; i < n; i++) {
+            	char input[100];
                 char temp[2];
-                if (!fscanf(file, "%s", &temp)) {errFlag = 1; break;}        
+                //if (!fscanf(file, "%s", &temp)) {errFlag = 1; break;}
+                //fscanf(file, "%s", &temp);
+                if (fgets(input, sizeof input, file) != NULL) {
+                    input [ strcspn(input, "\r\n") ] = 0;              // remove trailing newline etc
+                    if (!sscanf(input, "%s", &temp)) {errFlag = 1; break;}
+                }  
                 font->kerningPairs[i].ch[0] = temp[0];
                 font->kerningPairs[i].ch[1] = temp[1];
             }
@@ -300,8 +306,13 @@ Font* Engine_FontLoad(const char* fileName) {
                 {errFlag = 1; break;}
 
             for (int i = 0; i < n; i++) {
+                char input[100];
                 int temp;
-                if (!fscanf(file, "%d", &temp)) {errFlag = 1; break;}
+                //if (!fscanf(file, "%d", &temp)) {errFlag = 1; break;}
+                if (fgets(input, sizeof input, file) != NULL) {
+                	input [ strcspn(input, "\r\n") ] = 0;              // remove trailing newline etc
+                	if (!sscanf(input, "%d", &temp)) {errFlag = 1; break;}
+                	}
                 font->kerningValues[i] = temp;
             }
         }
@@ -314,6 +325,7 @@ Font* Engine_FontLoad(const char* fileName) {
         return NULL;
     }
 
+	printf(font);
     return font;
 }
 
@@ -553,7 +565,7 @@ void Engine_DrawTextExtScale(const char* str, int fontID, float scale, SDL_Color
 
 int Engine_MusicLoad(const char* fileName) {
     char path[STR_PATH_BUFFER_SIZE];
-    sprintf(path, "%s\\%s", MUSIC_FOLDER, fileName);
+    sprintf(path, "%s/%s", MUSIC_FOLDER, fileName);
 
     engine.music = BASS_MusicLoad(
         FALSE, path, 0, 0, BASS_SAMPLE_LOOP, MUSIC_FREQUENCY);
@@ -590,7 +602,7 @@ int Engine_SoundsLoad(const char** files, int n) {
 
     for (int i = 0; i < n; i++) {
         char path[STR_PATH_BUFFER_SIZE];
-        sprintf(path, "%s\\%s", SOUND_FOLDER, files[i]);
+        sprintf(path, "%s/%s", SOUND_FOLDER, files[i]);
 
         engine.sounds[i] = Engine_SoundLoad(path);
         if (!engine.sounds[i]) 
@@ -627,7 +639,7 @@ int Engine_SoundsSfxLoad(const char** files, int n) {
 
     for (int i = 0; i < n; i++) {
         char path[STR_PATH_BUFFER_SIZE];
-        sprintf(path, "%s\\%s", SOUND_FOLDER, files[i]);
+        sprintf(path, "%s/%s", SOUND_FOLDER, files[i]);
 
         engine.soundsSfx[i] = Engine_SoundSfxLoad(path);
         if (!engine.soundsSfx[i]) 
