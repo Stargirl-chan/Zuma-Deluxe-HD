@@ -96,6 +96,8 @@ typedef struct _DialogueBoxText {
 
 void DialogueBoxText_Init(DialogueBoxText* dbt);
 
+#define MIN(a,b)	((a<b) ? a : b)
+
 #define DB_ANIM_SPD 96
 
 typedef struct _DialogueBox {
