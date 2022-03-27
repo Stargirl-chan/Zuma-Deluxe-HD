@@ -191,7 +191,7 @@ int LevelMgr_LoadLevels(const char* fileName) {
     int done;
 
     char path[STR_PATH_BUFFER_SIZE];
-    sprintf(path, "%s\\%s", PATH_LEVEL, fileName);
+    sprintf(path, "%s/%s", PATH_LEVEL, fileName);
 
     char* buff = malloc(XML_BUFF_SIZE);
     if (!buff) {
@@ -201,7 +201,7 @@ int LevelMgr_LoadLevels(const char* fileName) {
 
     FILE *fp = fopen(path, "r");
     if (!fp) {
-        Engine_PushErrorFile(path, "Не удалось открыть файл!");
+        Engine_PushErrorFile(path, "<CD><E5> <F3><E4><E0><EB><EE><F1><FC> <EE><F2><EA><F0><FB><F2><FC> <F4><E0><E9><EB>!");
         return 0;
     }
 
@@ -344,7 +344,7 @@ int Level_Load(Level* level) {
 
     sprintf(
         path, 
-        "%s\\%s\\%s.jpg", 
+        "%s/%s/%s.jpg", 
         PATH_LEVEL,
         levelMgr.graphics[level->graphicsID].id,
         levelMgr.graphics[level->graphicsID].textureFile
@@ -357,7 +357,7 @@ int Level_Load(Level* level) {
     if (!(strcmp(levelMgr.graphics[level->graphicsID].textureTopLayerFile, "none") == 0)) {
         sprintf(
             path, 
-            "%s\\%s\\%s.png", 
+            "%s/%s/%s.png", 
             PATH_LEVEL,
             levelMgr.graphics[level->graphicsID].id,
             levelMgr.graphics[level->graphicsID].textureTopLayerFile
@@ -369,7 +369,7 @@ int Level_Load(Level* level) {
     
     sprintf(
         path, 
-        "%s\\%s\\%s.dat", 
+        "%s/%s/%s.dat", 
         PATH_LEVEL,
         levelMgr.graphics[level->graphicsID].id,
         levelMgr.graphics[level->graphicsID].spiralFile

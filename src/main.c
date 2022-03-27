@@ -14,7 +14,7 @@ int main(int argc, char ** args) {
     if (!Engine_CreateWindow("Zuma HD. By GalaxyShad and s4lat", WINDOW_WIDTH, WINDOW_HEIGHT))
         return 2;
 
-    SDL_Texture* texDisc = Engine_TextureLoad("images\\disclaimer.jpg");
+    SDL_Texture* texDisc = Engine_TextureLoad("images/disclaimer.jpg");
     if (!texDisc)
         return 10;
 
